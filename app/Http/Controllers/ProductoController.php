@@ -145,10 +145,45 @@ class ProductoController extends Controller{
         }
     }
       
-    public function obtenerProductoCategoria($id_categoria){
+  /*   public function obtenerProductoCategoria($id_categoria){
         $p = Producto::where('id_categoria',$id_categoria)->paginate(12);
         return response()->json(['Productos'=>$p],200);
     }
+ */
+
+
+    public function obtenerProductoCategoria($id_categoria){
+        switch ($id_categoria) {
+            case '1':
+                #Ceramicos
+                /* $prop = Prop_ceramico::findOrFail($p->id_propiedad); */
+                break;
+            case '2':
+                #Blangino
+                /* $prop = Prop_blangino::findOrFail($p->id_propiedad); */
+                $prop = Producto::where('productos.id_categoria', $id_categoria)->select('productos.*', 'prop_blanginos.dim','prop_blanginos.peso_unitario','prop_blanginos.peso_m2','prop_blanginos.terminacion','prop_blanginos.uso','prop_blanginos.cant_m2')->join('prop_blanginos', 'prop_blanginos.id','=','productos.id_propiedad')->get();
+                break;
+            case '3':
+                #Pastina
+                /* $prop = Prop_pastina::findOrFail($p->id_propiedad); */
+                $prop = Producto::where('productos.id_categoria', $id_categoria)->select('productos.id','productos.*', 'prop_pastinas.color','prop_pastinas.junta','prop_pastinas.tamaño')->join('prop_pastinas', 'productos.id_propiedad', '=', 'prop_pastinas.id')->get();
+                break;
+            case '4':
+                #chapas
+                /* $prop = Prop_chapa::findOrFail($p->id_propiedad); */
+                break;
+            case '5':
+                #Hierros
+                /* $prop = Prop_hierro::findOrFail($p->id_propiedad); */
+            default:
+                # prop otro
+                /* $prop = Prop_otro::findOrFail($p->id_propiedad); */
+                break;
+        }
+        return response()->json(['Message'=>'OK','Productos'=>$prop],201);
+    }
+
+
 
     public function obtenerProductoActivos(){
         $p = Producto::where('estado',1)->get();

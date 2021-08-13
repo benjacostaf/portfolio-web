@@ -25,6 +25,7 @@ $router->group(['prefix'=>'tipo'], function() use($router){
     $router->post('/nuevo','TipoController@register');
     $router->get('/', 'TipoController@obtenerTipos');
     $router->get('/{id_tipo}','TipoController@obtenerTipoId');
+    $router->get('/filters/{id_tipo}', 'TipoController@obtenerFiltros');
 });
 
 $router->group(['prefix'=>'categoria'], function() use($router){
